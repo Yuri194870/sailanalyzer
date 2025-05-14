@@ -123,24 +123,7 @@ else{var i="object"==typeof exports?e(require("leaflet")):e(t.L);for(var n in i)
                                             default:  return `${a}-${o}-${r} ${s}:${c}:${l}`;
                                         }
                             },
-                            // // Helper to format duration seconds into readable string
-                            // _formatDuration: function(seconds) {
-                            //     if (seconds == FULL_TRACK_HISTORY) {
-                            //         return 'Full';
-                            //     }
-                            //     if (seconds === 0) {
-                            //         return 'Off';
-                            //     }
-                            //     if (seconds < 60) {
-                            //         return `${seconds}s`;
-                            //     }
-                            //     const minutes = Math.floor(seconds / 60);
-                            //     const remainingSeconds = seconds % 60;
-                            //     if (remainingSeconds === 0) {
-                            //         return `${minutes}m`;
-                            //     }
-                            //     return `${minutes}m ${remainingSeconds}s`;
-                            // },
+
 
 							_initContainer: function() {
 								// Hoofdcontainer die de hele breedte zal innemen
@@ -203,20 +186,9 @@ else{var i="object"==typeof exports?e(require("leaflet")):e(t.L);for(var n in i)
 										analysisButtonGroup,                   // parentContainer
 										this._toggleSegmentSelectionMode       // callbackFn
 									);
-									// Geef het een iets andere look dan de afspeelknoppen, of houd het consistent
-									// this._segmentAnalysisBtn.style.marginLeft = "10px"; // Optionele extra marge
+
 								}
-							
-								// --- Waar de overgebleven controls te plaatsen? ---
-								// Voor nu, laten we ze even NIET toevoegen aan deze balk.
-								// We maken later een aparte control of een settings menu.
-								// this._textDisplaySelect = this._createTextDisplaySelector(...);
-								// if (this.options.showSegmentAnalysisButton) { this._segmentAnalysisBtn = this._createButton(...); }
-							
-							
-								// Verwijder de oude container logica
-								// this._infoContainer = ...
-								// this._optionsContainer = ...
+
 							
 								return this._container;
 							},
@@ -241,16 +213,9 @@ else{var i="object"==typeof exports?e(require("leaflet")):e(t.L);for(var n in i)
 								button.setAttribute("role", "button");
 								button.setAttribute("aria-label", title); // Gebruik title ook voor aria-label
 							
-								// --- BEGIN HIGHLIGHT: Aangepaste logica voor innerHTML ---
-								// Als buttonContent een niet-lege string is, gebruik het als innerHTML.
-								// Anders (als het null, undefined of een lege string is), zetten we geen innerHTML,
-								// ervan uitgaande dat het een icoon-knop is die zijn uiterlijk via CSS krijgt.
 								if (typeof buttonContent === 'string' && buttonContent.trim() !== '') {
 									button.innerHTML = buttonContent;
 								}
-								// De specifieke 'if (className.includes('btn-segment-analysis'))' is nu niet meer nodig
-								// als je de "Analyze" tekst gewoon als eerste parameter meegeeft.
-								// --- EINDE HIGHLIGHT ---
 							
 								a.a.DomEvent.disableClickPropagation(button);
 								a.a.DomEvent.on(button, "click", a.a.DomEvent.preventDefault)
@@ -291,44 +256,11 @@ else{var i="object"==typeof exports?e(require("leaflet")):e(t.L);for(var n in i)
                             return n;
                             },
 
-					        // _createTextDisplaySelector: function(parent) {
-					        //     let container = a.a.DomUtil.create('div', 'trackplayback-select-container playback-control-item', parent);
-					        //     let label = a.a.DomUtil.create('label', 'trackplayback-label', container);
-					        //     label.innerHTML = 'Athlete info: '; // Shortened label
-					        //     label.setAttribute('for', 'trackplayback-text-display');
 
-					        //     let select = a.a.DomUtil.create('select', 'trackplayback-select', container);
-					        //     select.setAttribute('id', 'trackplayback-text-display');
-
-					        //     const options = [
-					        //         { value: DISPLAY_MODE.FULL, text: 'All' },
-					        //         { value: DISPLAY_MODE.NAME_SPEED, text: 'Name & Speed' },
-					        //         { value: DISPLAY_MODE.NAME_ONLY, text: 'Name' },
-					        //         { value: DISPLAY_MODE.NONE, text: 'None' }
-					        //     ];
-
-					        //     options.forEach(optData => {
-					        //         let option = a.a.DomUtil.create('option', '', select);
-					        //         option.value = optData.value; option.innerHTML = optData.text;
-							// 		if (optData.value === this._currentTextDisplayMode) { option.selected = true; }
-							// 	});
-
-							// 	a.a.DomEvent.on(select, 'change', this._onTextDisplayChange, this);
-							// 	return select;
-							// },
-
-							// 	_onTextDisplayChange: function(e) { // Handler for Text Dropdown
-							// 		const selectedMode = e.target.value;
-							// 		this._currentTextDisplayMode = selectedMode;
-							// 		this.trackPlayBack.draw.setTextDisplayMode(selectedMode);
-							// 	},
-
-								// --- BEGIN HIGHLIGHT ---
 								_onTrackDurationChange: function(e) { // Handler voor History Slider
 									const sliderValue = Number(e.target.value);
 									const maxSliderValue = Number(this._trackDurationSlider.max);
 									let durationToSet;
-									// --- BEGIN HIGHLIGHT ---
 									let displayText; // Variabele voor de te tonen tekst
 	
 									// Check if slider is at (or very near) max value, treat as "Full" history
@@ -346,9 +278,6 @@ else{var i="object"==typeof exports?e(require("leaflet")):e(t.L);for(var n in i)
 									this._currentTrackDuration = durationToSet;
 									// Update de tekstuele feedback
 									this._infoTrackDuration.innerHTML = displayText;
-									// --- EINDE HIGHLIGHT ---
-	
-									// Geef de waarde door aan de Draw instantie
 									this.trackPlayBack.draw.setTrackHistoryDuration(durationToSet);
 								},
 								_toggleSegmentSelectionMode: function() {

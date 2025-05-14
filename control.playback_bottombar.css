@@ -648,3 +648,68 @@
     cursor: pointer;
     font-size: 0.95em;
 }
+
+
+/* Voor schermen kleiner dan bijvoorbeeld 768px */
+@media (max-width: 767px) {
+    .leaflet-control-playback-bottombar {
+        gap: 8px; /* Kleinere gap */
+        padding: 6px 8px; /* Minder padding */
+        bottom: 5px; left: 5px; right: 5px; /* Dichter op de rand */
+    }
+
+    .leaflet-control-playback-bottombar .playback-control-group {
+        gap: 4px; /* Kleinere interne gap */
+    }
+
+    .leaflet-control-playback-bottombar .playback-button {
+        width: 26px; /* Kleinere knoppen */
+        height: 26px;
+        background-size: 14px 14px; /* Kleinere iconen */
+    }
+
+    .leaflet-control-playback-bottombar .playback-time-display .info-cur-time .info-value {
+        min-width: 130px; /* Iets kleinere tijd display */
+        font-size: 0.9em;
+    }
+    .leaflet-control-playback-bottombar .playback-speed-controls .info-speed-ratio .info-value {
+        min-width: 30px;
+        font-size: 0.85em;
+    }
+
+    .leaflet-control-playback-bottombar .playback-history-slider-group {
+        min-width: 150px; /* Kortere history slider groep */
+    }
+    .leaflet-control-playback-bottombar .playback-history-slider-group .playback-trackduration-slider {
+        min-width: 50px;
+        width: auto; /* Laat flex-grow het meer bepalen */
+    }
+    .leaflet-control-playback-bottombar .playback-history-slider-group .playback-trackduration-info {
+        min-width: 40px; /* Iets compacter */
+    }
+
+    /* Overweeg om minder belangrijke elementen te verbergen */
+    /* .leaflet-control-playback-bottombar .playback-time-display .info-title { display: none; } */
+}
+
+/* Voor nog kleinere schermen (bijv. iPhone in portrait) */
+@media (max-width: 480px) {
+    .leaflet-control-playback-bottombar {
+        flex-wrap: wrap; /* Sta toe dat items naar volgende regel gaan */
+        justify-content: center; /* Centreer de items als ze wrappen */
+        height: auto; /* Laat hoogte aanpassen aan meerdere regels */
+        gap: 8px; /* Kleinere gap tussen regels */
+    }
+    .leaflet-control-playback-bottombar .playback-control-group {
+        /* Zorg dat groepen logisch wrappen */
+    }
+    .leaflet-control-playback-bottombar .playback-time-slider-group {
+        min-width: 100%; /* Laat slider de volle breedte nemen op een nieuwe regel */
+        order: 5; /* Verplaats het eventueel naar het einde */
+        margin-left: 0; margin-right: 0;
+    }
+     .leaflet-control-playback-bottombar .playback-history-slider-group {
+        min-width: 100%;
+        order: 6;
+     }
+}

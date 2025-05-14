@@ -651,7 +651,7 @@
 
 
 /* Voor schermen kleiner dan bijvoorbeeld 768px */
-@media (max-width: 767px) {
+@media (max-width: 1067px) {
     .leaflet-control-playback-bottombar {
         gap: 8px; /* Kleinere gap */
         padding: 6px 8px; /* Minder padding */

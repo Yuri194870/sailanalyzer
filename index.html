@@ -1,61 +1,183 @@
 <!DOCTYPE html>
-<html lang="bg">
+<html lang="en">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>leaflet.trackplayback</title>
-  <link rel="stylesheet" href="./lib/leaflet/leaflet.css">
-  <link rel="stylesheet" href="../downloaded_website/control.playback.css">
-  <script src="./lib/leaflet/leaflet.js"></script>
-  <script src="../downloaded_website/control.trackplayback.js"></script>
-  <script src="../downloaded_website/leaflet.trackplayback.js"></script>
-  
+  <link rel="stylesheet" href="./leaflet.css">
+  <link rel="stylesheet" href="../dist/control.playback_bottombar.css?v=2">
+  <script src="./leaflet.js"></script>
+  <script src="./leaflet.geometryutil.js"></script>
+  <script src="./control.trackplayback_new_bar.js?v=3"></script>
+  <script src="./leaflet.trackplayback.js?v=2"></script>
+  <script src="./leaflet.segmentanalysis.js?v=3"></script>
+  <script src="./control.segmentanalysis.js?v=1"></script>
+
+  <link rel="stylesheet" href="https://unpkg.com/@geoman-io/leaflet-geoman-free@2.13.0/dist/leaflet-geoman.css" />
+  <script src="https://unpkg.com/@geoman-io/leaflet-geoman-free@2.13.0/dist/leaflet-geoman.min.js"></script>
+
 </head>
 
 <body>
-  
-  <div id='mapid' style=" position: absolute; left: 0; top: 0; right: 0; bottom: 0; width: 100%; height: 100%; overflow: hidden;"></div>
+  <a href="https://github.com/linghuam/Leaflet.TrackPlayBack"><img style="position: absolute; top: 0; left: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_left_green_007200.png" alt="Fork me on GitHub"></a>
+  <div id='mapid' style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; width: 100%; height: 100%; overflow: hidden;"></div>
   <script>
-     var marker;
-    // create map and add baseLayer
-    const map = L.map('mapid').setView([43.82632, 25.943415], 9);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    // Laad track data
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', './combined_tracks.json', false);
+    xhr.send(null);
+    const data = JSON.parse(xhr.responseText);
+    
+    // Initialiseer kaart
+    const map = L.map('mapid',{zoomControl:false}).setView([52.77, 5.14], 14);
+
+
+    // Voeg schaalbalk toe
+    L.control.scale({
+      position: 'topleft', // Positie van de schaalbalk
+      imperial: false, // Geen imperiale eenheden
+      maxWidth: 200 // Maximale breedte van de schaalbalk
+    }).addTo(map);
+    
+    // Activeer Geoman knoppen
+  map.pm.addControls({
+    position: 'topleft',
+    rotateMode: true,
+    drawCircleMarker: true, // Hiermee kan je circlemarkers tekenen
+    drawMarker: false,
+    drawPolyline: true,
+    drawPolygon: false,
+    drawCircle: false,
+    drawRectangle: false,
+    drawText: false,
+    editMode: false,
+    dragMode: true,
+    cutPolygon: false,
+    removalMode: true,
+    
+    
+  });
+
+  map.pm.setGlobalOptions({
+  circleMarkerStyle: {
+    radius: 40
+  }
+});
+
+map.on('pm:create', e => {
+  if (e.layer instanceof L.CircleMarker) {
+    e.layer.setStyle({
+      radius: 4,
+      color: 'orange',
+      fillColor: 'yellow',
+      fillOpacity: 1
+    });
+  }
+});
+
+  // Event voor wanneer een vorm wordt getekend
+  map.on('pm:create', e => {
+    console.log('Nieuw object:', e.layer);
+    // Voeg eventueel extra logica toe hier
+  });
+    
+    // Basislagen definiëren
+    const streetLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+      subdomains: 'abcd',
+      maxZoom: 20,
+      name: 'Road Map'  // Naam voor layer control
+    });
+    
+    const satelliteLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+      attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
+      maxZoom: 20,
+      name: 'Satellite Map'  // Naam voor layer control
+    });
+
+    const CartoDB_Positron = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+	    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+  	  subdomains: 'abcd',
+	    maxZoom: 20,
+      name: 'Gray Map'
+    });
+    
+    const CartoDB_DarkMatter = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+	  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+	  subdomains: 'abcd',
+	  maxZoom: 20
+    });
+
+
+
+    // Standaard laag toevoegen
+    streetLayer.addTo(map);
+    
+    // Track playback initialiseren
+    const trackplayback = L.trackplayback(data, map, {
+      targetOptions: {
+        useImg: true,
+        imgUrl: './ship.png',
+        width: 12, // Oorspronkelijke waarde was bijv. 8, nu 16
+        height: 24 // Oorspronkelijke waarde was bijv. 16, nu 32
+      },
+      trackHistoryDuration: 120 // 60 seconden = 1 minuut
+
+    });
+    
+    // Layer control toevoegen
+    const baseLayers = {
+      "Road Map": streetLayer,
+      "Satellite Map": satelliteLayer,
+      "Gray Map": CartoDB_Positron,
+      "Dark Map": CartoDB_DarkMatter
+    };
+
+
+    
+    const layerControl = L.control.layers(baseLayers, null, {
+      position: 'topright',  
+      collapsed: true       
     }).addTo(map);
 
-    // get data from server
-    const xhr = new XMLHttpRequest();
-    xhr.open('GET', './data/output.json', false);  // gebruik jouw nieuwe bestand
-    xhr.onreadystatechange = xhrCallback;
-    xhr.send();
-
-    function xhrCallback() {
-      if (xhr.readyState === 4 && xhr.status === 200) {
-        const data = JSON.parse(xhr.responseText);
-        const trackplayback = L.trackplayback(data, map, {
-          targetOptions: {
-            useImg: true,
-            //imgUrl: 'examples/ship.png'
-          }
-        });
-        const trackplaybackControl = L.trackplaybackcontrol(trackplayback);
-        trackplaybackControl.addTo(map);
-		//console.log('end');
-		console.log(trackplayback);
-		trackplayback.on('start', e => {
-           console.log(e.tracks)
-        }, this)
-      }
-	  
-    }
-	
-map.on('click',function mapClickListen(e) {
+    // 3. Maak de NIEUWE Track Filter Control aan
+    var trackFilterControl = L.trackFilterControl(trackplayback, { // Geef dezelfde trackplayback instantie mee!
+      position: 'topright', // Positie
+      collapsed: true     // Standaard ingeklapt
+    });
     
-	
-  });
+    // Track playback control toevoegen
+    const trackplaybackControl = L.trackplaybackcontrol(trackplayback,{showSegmentAnalysisButton: true });
+    trackplaybackControl.addTo(map);
+    trackFilterControl.addTo(map);
+
+    var segmentAnalysisHandler = L.segmentAnalysisHandler(trackplayback, map, {
+    });
+
+    // 5. Maak de (placeholder) Segment Analysis Display Control aan
+    var segmentAnalysisDisplayControl = L.control.segmentAnalysisDisplay(segmentAnalysisHandler, {
+    position: 'bottomleft' // Of een andere positie
+    });
+    segmentAnalysisDisplayControl.addTo(map);
+
+    segmentAnalysisHandler.setDisplayControl(segmentAnalysisDisplayControl);
+
+    var labelOptionsControl = L.control.labelOptions(trackplayback, { // Geef trackplayback instantie mee
+    position: 'topright', // Of een andere gewenste positie
+    collapsed: true,
+    labelOptions: [ // Optioneel: overschrijf hier de defaults als je andere standaard labels wilt
+        { key: 'showName', text: 'Name' }, 
+        { key: 'showSpeed', text: 'Speed' },
+        { key: 'showBearing', text: 'Heading' }
+    ]
+    });
+    labelOptionsControl.addTo(map);
+
+
+
+
   </script>
 </body>
-
 </html>

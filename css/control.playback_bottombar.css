@@ -164,12 +164,12 @@
 }
 
 /* Specifieke iconen en kleuren voor knoppen */
-.leaflet-control-playback-bottombar .playback-button.btn-stop { background-image: url(./icon-play.png); }
-.leaflet-control-playback-bottombar .playback-button.btn-start { background-image: url(./icon-stop.png); }
-.leaflet-control-playback-bottombar .playback-button.btn-restart { background-image: url(./icon-restart.png); }
+.leaflet-control-playback-bottombar .playback-button.btn-stop { background-image: url(./images/icon-play.png); }
+.leaflet-control-playback-bottombar .playback-button.btn-start { background-image: url(./images/icon-stop.png); }
+.leaflet-control-playback-bottombar .playback-button.btn-restart { background-image: url(./images/icon-restart.png); }
 
 .leaflet-control-playback-bottombar .playback-button.btn-slow {
-    background-image: url(./icon-slow.png);
+    background-image: url(./images/icon-slow.png);
     background-color: rgba(200, 100, 100, 0.8);
 }
 .leaflet-control-playback-bottombar .playback-button.btn-slow:hover {
@@ -181,7 +181,7 @@
 }
 
 .leaflet-control-playback-bottombar .playback-button.btn-quick {
-    background-image: url(./icon-quick.png);
+    background-image: url(./images/icon-quick.png);
     background-color: rgba(100, 200, 100, 0.8);
 }
 .leaflet-control-playback-bottombar .playback-button.btn-quick:hover {

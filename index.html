@@ -26,12 +26,12 @@
   <script>
     // Laad track data
     const xhr = new XMLHttpRequest();
-    xhr.open('GET', './data/combined_tracks.json', false);
+    xhr.open('GET', './data/wingen_scheef.json', false);
     xhr.send(null);
     const data = JSON.parse(xhr.responseText);
     
     // Initialiseer kaart
-    const map = L.map('mapid',{zoomControl:false}).setView([52.77, 5.14], 14);
+    const map = L.map('mapid',{zoomControl:false}).setView([52.1, 4.26], 14);
 
 
     // Voeg schaalbalk toe

@@ -181,7 +181,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             try {
                 currentTrackPlaybackInstance = L.trackplayback(trackDataForBaseInit, map, {
-                    targetOptions: { useImg: true, imgUrl: '../css/images/ship.png', width: 12, height: 24 },
+                    targetOptions: { useImg: true, imgUrl: './css/images/ship.png', width: 12, height: 24 },
                     trackHistoryDuration: defaultTrackHistDur,
                     labelOptions: defaultLabelOpts
                 });

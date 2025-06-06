@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sail Analyzer - Upload Tracks</title>
+    <link rel="stylesheet" href="./css/style-upload.css?v=4"> 
+</head>
+<body>
+    <header>
+        <h1>Sail Race Analyzer</h1>
+        <p>Upload your GPX track files to visualize and analyze your sailing session.</p>
+    </header>
+
+    <main>
+        <div class="tab-navigation">
+            <button class="tab-button active" data-tab="new-session-tab">Create New Session</button>
+            <button class="tab-button" data-tab="load-session-tab">Load Saved Session</button>
+        </div>
+    
+        <div id="new-session-tab" class="tab-content active">
+            <section id="upload-section">
+                <h2>Upload GPX Files</h2>
+                <div>
+                    <input type="file" id="gpxFileUpload" multiple accept=".gpx" style="padding: 5px;">
+                </div>
+                <div id="athleteNameInputsContainer" style="margin-top: 15px; margin-bottom:15px;">
+                </div>
+                <button id="processGpxBtn" disabled>Process Files & View Map</button>
+                <div id="uploadStatus" style="margin-top: 10px; font-style: italic;"></div>
+            </section>
+        </div>
+    
+        <div id="load-session-tab" class="tab-content">
+            <section id="load-session-section">
+                <h2>Upload SAZ File</h2>
+                <!-- <p>Select a previously saved .saz session file to continue.</p> -->
+                <div>
+                    <input type="file" id="sazFileUpload" accept=".saz" style="padding: 5px;">
+                </div>
+                <button id="processSazBtn" disabled>Load Session & View Map</button>
+                <div id="loadSazStatus" style="margin-top: 10px; font-style: italic;"></div>
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <p>© 2025 Sail Analyzer</p>
+    </footer>
+    <script src="https://unpkg.com/dexie@latest/dist/dexie.js"></script>
+    <script src="./js/db-config.js?v=1"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pako/2.1.0/pako.min.js"></script>
+    <script src="https://unpkg.com/@tmcw/togeojson/dist/togeojson.umd.js"></script>
+    <script src="./js/gpx-uploader.js?v=3"></script>
+    <script src="./js/session-loader.js?v=2"></script>
+</body>
+</html>

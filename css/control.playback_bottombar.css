@@ -1,0 +1,687 @@
+/* ==========================================================================
+   Hoofd Playback Control Bar (Onderkant) - NIEUWE STRUCTUUR
+   ========================================================================== */
+/* Maak de standaard Leaflet container voor bottom-left (of bottom-right) full-width */
+.leaflet-control-container .leaflet-bottom.leaflet-left,
+.leaflet-control-container .leaflet-bottom.leaflet-right {
+    width: 100%; /* Forceer de hoek-container om de volledige breedte te nemen */
+    /* left: 0; right: 0; bottom:0;  Dit is al standaard voor deze containers */
+    /* Pointer-events moeten hier goed staan zodat je nog op de kaart kunt klikken */
+    pointer-events: none; /* De container zelf vangt geen clicks */
+}
+
+
+/* Jouw control bar binnen die full-width container */
+.leaflet-control-playback-bottombar {
+    position: relative; /* Kan nu relative zijn binnen zijn full-width parent */
+    /* Of blijf absolute als je specifieke bottom/left/right offsets wilt BINNEN de parent */
+    /* position: absolute; */
+    
+    bottom: 10px; /* Als absolute, anders bepaald door parent padding
+
+    /* Als je wilt dat het de volledige breedte van de .leaflet-bottom.leaflet-left vult, min marges: */
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-bottom: 10px; /* Als je de balk iets van de onderkant van de parent wilt */
+    width: auto; /* Of width: calc(100% - 20px); als margin niet werkt zoals verwacht */
+    box-sizing: border-box;
+
+    /* Verwijder !important waar mogelijk nu de parent de breedte dicteert */
+    z-index: 1000;
+    background-color: rgba(255, 255, 255, 0.9);
+    border: 1px solid #bbb;
+    border-radius: 6px;
+    box-shadow: 0 1px 5px rgba(0,0,0,0.2);
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    float: none; /* Zeker stellen */
+    clear: both; /* Zeker stellen */
+    user-select: none;
+    pointer-events: auto; /* De balk zelf moet wel clicks vangen */
+}
+
+/* Segment Analysis knop - specifieke styling voor tekst-knop */
+.leaflet-control-playback-bottombar .playback-button.btn-segment-analysis {
+    background-image: none !important; /* VERWIJDER het SVG icoon */
+    background-color: #e9e9e9;       /* Een iets andere basis achtergrondkleur, of transparant */
+    /* Je kunt ook de algemene background-color van .playback-button gebruiken als je dat wilt */
+    /* Als je een volledig transparante achtergrond wilt (alleen tekst en border): */
+    /* background-color: transparent; */
+    color: #333; /* Tekstkleur */
+    font-weight: bold;
+    font-size: 0.9em; /* Pas lettergrootte aan indien nodig */
+    padding: 5px 12px; /* Pas padding aan voor tekst */
+    width: auto; /* Laat breedte bepaald worden door tekst en padding */
+    height: auto; /* Laat hoogte bepaald worden door tekst en padding */
+}
+
+
+.leaflet-control-playback-bottombar .playback-control-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0; /* Voorkom dat groepen krimpen als de timeslider groeit, tenzij ze zelf flex-grow hebben */
+
+}
+
+/* Speed Controls */
+.leaflet-control-playback-bottombar .playback-speed-controls .info-speed-ratio .info-value {
+    min-width: 35px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 0.9em;
+    padding: 2px 0px; /* Aangepaste padding */
+    /* border: 1px solid #ddd; */
+    /* background-color: #f9f9f9; */
+    border-radius: 3px;
+}
+
+/* Current Time Display */
+.leaflet-control-playback-bottombar .playback-time-display .info-title {
+    font-size: 0.9em;
+    margin-right: 3px; /* Ruimte tussen "Time:" en de waarde */
+}
+.leaflet-control-playback-bottombar .playback-time-display .info-cur-time .info-value {
+    font-family: "Consolas", "Menlo", "Courier New", monospace;
+    font-size: 0.95em;
+    min-width: 160px;
+    padding: 2px 4px;
+    background-color: #f0f0f0;
+    border-radius: 3px;
+}
+
+/* Time Slider Group */
+.leaflet-control-playback-bottombar .playback-time-slider-group {
+    flex-grow: 1;
+    flex-basis: 0; /* Goede toevoeging met flex-grow */
+    min-width: 150px;
+}
+.leaflet-control-playback-bottombar .playback-time-slider-group .playback-slider {
+    width: 100%;
+    margin: 0;
+    /* Gebruik de algemene slider styling hieronder voor track/thumb */
+}
+
+/* Track History Duration Slider Group */
+.leaflet-control-playback-bottombar .playback-history-slider-group {
+    min-width: 200px; /* Was 220px, iets verkleind */
+    align-items: center; /* Zorg dat label, slider, info goed uitlijnen */
+}
+.leaflet-control-playback-bottombar .playback-history-slider-group .trackplayback-label {
+    margin-right: 5px;
+    font-size: 0.9em;
+    /* font-weight: bold; */
+}
+.leaflet-control-playback-bottombar .playback-history-slider-group .playback-trackduration-slider {
+    width: auto; /* Laat flex-grow de breedte bepalen, of een kleinere vaste waarde */
+    min-width: 60px; /* Minimale breedte voor de slider zelf */
+    margin: 0 5px 0 0;
+    /* Gebruik de algemene slider styling hieronder voor track/thumb */
+}
+.leaflet-control-playback-bottombar .playback-history-slider-group .playback-trackduration-info {
+    font-family: "Consolas", "Menlo", "Courier New", monospace;
+    min-width: 30px;
+    text-align: right;
+    font-size: 0.95em;
+    padding: 2px 4px;
+    background-color: #f0f0f0;
+    border-radius: 3px;
+
+    
+}
+
+/* Algemene knopstijl voor knoppen in de bottombar */
+.leaflet-control-playback-bottombar .playback-button {
+    display: inline-block;
+    width: 30px;
+    height: 25px;
+    border-radius: 4px;
+    border: 1px solid #bbb;
+    background-color: #f8f8f8;
+    text-decoration: none;
+    cursor: pointer;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 18px 18px; /* Pas aan als je iconen 16x16 zijn */
+    transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out, transform 0.1s ease-out, box-shadow 0.2s ease-in-out;
+
+}
+.leaflet-control-playback-bottombar .playback-button:hover {
+    background-color: #e8e8e8;
+    border-color: #999;
+    transform: translateY(-1px); /* Subtiele lift bij hover */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.15); /* Iets meer schaduw */
+}
+
+/* Actieve state voor alle knoppen (wanneer ingedrukt) --- */ 
+.leaflet-control-playback-bottombar .playback-button:active {
+    background-color: #d8d8d8; /* Iets donkerder als ingedrukt */
+    border-color: #888;
+    transform: translateY(0px); /* Terug naar originele positie (of translateY(1px) voor "ingedrukt" effect) */
+    box-shadow: 0 1px 2px rgba(0,0,0,0.2) inset; /* Ingeslagen schaduw */
+}
+
+/* Specifieke iconen en kleuren voor knoppen */
+.leaflet-control-playback-bottombar .playback-button.btn-stop { background-image: url(./images/icon-play.png); }
+.leaflet-control-playback-bottombar .playback-button.btn-start { background-image: url(./images/icon-stop.png); }
+.leaflet-control-playback-bottombar .playback-button.btn-restart { background-image: url(./images/icon-restart.png); }
+
+.leaflet-control-playback-bottombar .playback-button.btn-slow {
+    background-image: url(./images/icon-slow.png);
+    background-color: rgba(200, 100, 100, 0.8);
+}
+.leaflet-control-playback-bottombar .playback-button.btn-slow:hover {
+    background-color: rgba(220, 0, 0, 0.8);
+}
+
+.leaflet-control-playback-bottombar .playback-button.btn-slow:active {
+    background-color: rgba(180, 0, 0, 0.8); /* Donkerder rood */
+}
+
+.leaflet-control-playback-bottombar .playback-button.btn-quick {
+    background-image: url(./images/icon-quick.png);
+    background-color: rgba(100, 200, 100, 0.8);
+}
+.leaflet-control-playback-bottombar .playback-button.btn-quick:hover {
+    background-color: rgba(33, 220, 0, 0.8);
+}
+
+.leaflet-control-playback-bottombar .playback-button.btn-quick:active {
+    background-color: rgba(23, 180, 0, 0.8); /* Donkerder groen */
+}
+
+/* Segment Analysis knop (als die in de bottombar komt) */
+
+.leaflet-control-playback-bottombar .playback-button.btn-segment-analysis.active {
+    background-color: #c8f7c8;
+    border-color: #8fbc8f;
+}
+
+.leaflet-control-playback-bottombar .playback-button.btn-segment-analysis.active:active {
+    background-color: #a8d7a8; /* Nog donkerder */
+}
+
+/* Algemene slider track/thumb styling (voor BEIDE sliders in de bottombar) */
+.leaflet-control-playback-bottombar input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    background: transparent;
+    cursor: pointer;
+    /* Optioneel: voeg een transitie toe voor vloeiende hover-effecten */
+    /* transition: opacity 0.2s ease-in-out; /* Voorbeeld voor opacity */
+}
+
+/* --- WebKit (Chrome, Safari, Opera, Edge Chromium) --- */
+
+/* Track */
+.leaflet-control-playback-bottombar input[type="range"]::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 18px; /* Jouw waarde */
+    background: #ddd; /* Jouw waarde */
+    border-radius: 3px;
+    border: 0.2px solid #010101;
+    /* --- BEGIN HIGHLIGHT: WebKit Track Hover --- */
+    transition: background-color 0.2s ease-in-out; /* Vloeiende overgang voor achtergrondkleur */
+    /* --- EINDE HIGHLIGHT --- */
+}
+/* --- BEGIN HIGHLIGHT: WebKit Track Hover Effect --- */
+.leaflet-control-playback-bottombar input[type="range"]:hover::-webkit-slider-runnable-track {
+    background: #ccc; /* Iets donkerder grijs bij hover */
+}
+/* --- EINDE HIGHLIGHT --- */
+
+
+/* Thumb */
+.leaflet-control-playback-bottombar input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 25px; /* Jouw waarde */
+    width: 8px;   /* Jouw waarde */
+    border-radius: 4px; /* Jouw waarde */
+    background: #4a83f1; /* Jouw waarde */
+    border: 0.2px solid #010101; /* Jouw waarde */
+    margin-top: -3.5px; /* Jouw waarde: (18px track - 25px thumb) / 2 = -3.5px */
+    /* --- BEGIN HIGHLIGHT: WebKit Thumb Hover --- */
+    transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out; /* Vloeiende overgangen */
+    /* --- EINDE HIGHLIGHT --- */
+}
+/* --- BEGIN HIGHLIGHT: WebKit Thumb Hover Effect --- */
+.leaflet-control-playback-bottombar input[type="range"]:hover::-webkit-slider-thumb {
+    background: #357ABD; /* Donkerder blauw bij hover */
+    transform: scale(1.1); /* Maak de thumb iets groter bij hover*/
+}
+/* Optioneel: Actieve state (als de thumb wordt vastgehouden) */
+.leaflet-control-playback-bottombar input[type="range"]:active::-webkit-slider-thumb {
+    background: #2A6598; /* Nog donkerder blauw */
+    /* transform: scale(1.2); */
+}
+/* --- EINDE HIGHLIGHT --- */
+
+
+/* --- Firefox --- */
+
+/* Track */
+.leaflet-control-playback-bottombar input[type="range"]::-moz-range-track {
+    width: 100%;
+    height: 18px; /* Aangepast aan jouw WebKit track hoogte */
+    background: #ddd; /* Consistent met WebKit */
+    border-radius: 3px;
+    border: 0.2px solid #010101;
+    /* --- BEGIN HIGHLIGHT: Firefox Track Hover --- */
+    transition: background-color 0.2s ease-in-out;
+    /* --- EINDE HIGHLIGHT --- */
+}
+/* --- BEGIN HIGHLIGHT: Firefox Track Hover Effect --- */
+.leaflet-control-playback-bottombar input[type="range"]:hover::-moz-range-track {
+    background: #ccc;
+}
+/* --- EINDE HIGHLIGHT --- */
+
+
+/* Thumb */
+.leaflet-control-playback-bottombar input[type="range"]::-moz-range-thumb {
+    height: 25px; /* Aangepast aan jouw WebKit thumb hoogte */
+    width: 8px;   /* Aangepast aan jouw WebKit thumb breedte */
+    border-radius: 4px; /* Consistent */
+    background: #4a83f1;
+    border: 0.2px solid #010101; /* Voeg border toe voor consistentie */
+    /* --- BEGIN HIGHLIGHT: Firefox Thumb Hover --- */
+    transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out;
+    /* --- EINDE HIGHLIGHT --- */
+}
+/* --- BEGIN HIGHLIGHT: Firefox Thumb Hover Effect --- */
+.leaflet-control-playback-bottombar input[type="range"]:hover::-moz-range-thumb {
+    background: #357ABD;
+    /* transform: scale(1.1); */
+}
+/* Optioneel: Actieve state voor Firefox */
+.leaflet-control-playback-bottombar input[type="range"]:active::-moz-range-thumb {
+    background: #2A6598;
+    /* transform: scale(1.2); */
+}
+/* --- EINDE HIGHLIGHT --- */
+/* Microsoft Edge (oudere versie) & IE - mogelijk minder relevant */
+.leaflet-control-playback-bottombar input[type="range"]::-ms-track {
+    width: 100%; height: 6px; background: transparent; border-color: transparent; color: transparent;
+}
+.leaflet-control-playback-bottombar input[type="range"]::-ms-fill-lower { background: #4a83f1; border-radius: 3px; }
+.leaflet-control-playback-bottombar input[type="range"]::-ms-fill-upper { background: #b3b3b3; border-radius: 3px; }
+.leaflet-control-playback-bottombar input[type="range"]::-ms-thumb {
+    height: 16px; width: 16px; border-radius: 50%; background: #4a83f1; margin-top: 1px;
+}
+
+
+
+
+    /* NIEUW: Styling voor de aparte Track Filter Control */
+    .leaflet-control-trackfilter {
+        position: relative;
+        background-color: rgba(255, 255, 255, 0.7);
+        opacity: 1;
+        border: 2px solid #66666666;
+    }
+
+    /* Stijl voor de toggle knop (standaard leaflet-bar stijl) */
+    .leaflet-control-trackfilter a.leaflet-control-trackfilter-toggle {
+        width: 30px;
+        height: 30px;
+        background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23333"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>'); /* Simpel filter/lijst icoon (pas aan indien nodig) */
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-size: 18px 18px; /* Grootte van het icoon */
+        border-radius: 0px; /* Match container */
+        display: block;
+    }
+
+    /* Stijl voor de lijst container */
+    .leaflet-control-trackfilter .leaflet-control-trackfilter-list {
+        padding: 6px 10px;
+        max-height: 200px; /* Maximale hoogte voor scrollen */
+        overflow-y: auto;
+        display: none; /* Standaard verborgen (voor collapsed state) */
+        min-width: 120px; /* Minimale breedte */
+        border-radius: 0 0 5px 5px; /* Rond hoeken onderaan af */
+    }
+
+    /* Toon lijst wanneer uitgeklapt */
+    .leaflet-control-trackfilter-expanded .leaflet-control-trackfilter-list {
+        display: block;
+    }
+
+    /* Verberg toggle knop wanneer uitgeklapt (optioneel, zoals L.Control.Layers) */
+    .leaflet-control-trackfilter-expanded a.leaflet-control-trackfilter-toggle {
+        display: none;
+    }
+
+
+    /* Styling voor elk item (checkbox + label) in de lijst */
+    .leaflet-control-trackfilter .trackfilter-item {
+        display: block; /* Elk item op nieuwe regel */
+        margin-bottom: 4px;
+        white-space: nowrap; /* Voorkom dat lange namen wrappen */
+    }
+
+    .leaflet-control-trackfilter .trackfilter-checkbox {
+        margin-right: 5px;
+        vertical-align: middle;
+        cursor: pointer;
+    }
+
+    .leaflet-control-trackfilter .trackfilter-label {
+        vertical-align: middle;
+        cursor: pointer;
+        font-size: 0.95em;
+    }
+
+
+    .leaflet-control-playback .playback-button-container .btn-segment-analysis.active {
+        background-color: #c8f7c8; /* Lichtgroen als actief */
+        border-color: #8fbc8f;
+    }
+
+    .leaflet-control-playback-bottombar .playback-button.btn-save-session {
+        background-image: url(./images/icon-download.svg); /* Of icon-download.png */
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-size: 18px 18px; /* Pas aan naar de grootte van je andere iconen */
+        
+        /* Verwijder tekst als je alleen een icoon wilt.
+           Als je tekst + icoon wilt, laat text-indent weg en pas padding aan. */
+        /* text-indent: -9999px; */ /* Verbergt de tekst "Save" als die er nog zou zijn */
+    
+        /* Zorg dat de knop de juiste afmetingen heeft voor het icoon */
+        width: 30px;  /* Standaard breedte voor icoonknoppen in je bar */
+        height: 25px; /* Standaard hoogte voor icoonknoppen in je bar */
+        
+        /* Overige styling die je misschien wilt overnemen van andere icon-buttons */
+        border-radius: 4px; 
+        border: 1px solid #bbb;
+        background-color: #f8f8f8;
+        transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out;
+    }
+    
+    /* Hover state (optioneel, maar goed voor consistentie) */
+    .leaflet-control-playback-bottombar .playback-button.btn-save-session:hover {
+        background-color: #e8e8e8; /* Of de hover kleur die je andere knoppen gebruiken */
+        /* border-color: #999; */
+    }
+    
+    /* Active state (optioneel) */
+    .leaflet-control-playback-bottombar .playback-button.btn-save-session:active {
+        background-color: #d8d8d8; /* Of de active kleur die je andere knoppen gebruiken */
+        /* border-color: #888; */
+    }
+
+    /* NIEUW: Map cursor voor selectiemodus */
+    .leaflet-crosshair {
+        cursor: crosshair !important;
+    }
+
+
+    /* NIEUW: Styling voor de Segment Analyse Display Control (placeholder) */
+    .leaflet-control-segmentanalysis {
+        background-color: rgba(255, 255, 255, 0.85);
+        padding: 8px;
+        border-radius: 4px;
+        box-shadow: 0 1px 5px rgba(0,0,0,0.4);
+        max-width: 350px; /* Voorkom te breed worden */
+    }
+
+    .leaflet-control-segmentanalysis .segmentanalysis-status {
+        font-style: italic;
+        color: #555;
+        margin-bottom: 5px;
+        font-size: 0.9em;
+        min-height: 1.2em; /* Voorkom verspringen */
+    }
+
+    .leaflet-control-segmentanalysis .segmentanalysis-results {
+        /* Later stylen als de vergelijkingstabel er is */
+        font-size: 0.9em;
+    }
+    .leaflet-control-segmentanalysis .comparison-item {
+        padding: 3px 0;
+        border-bottom: 1px dashed #eee;
+    }
+    .leaflet-control-segmentanalysis .comparison-item:last-child {
+        border-bottom: none;
+    }
+    .leaflet-control-segmentanalysis .leaflet-control-button {
+        display: inline-block;
+        padding: 3px 7px;
+        margin: 2px;
+        font-size: 0.9em;
+        text-decoration: none;
+        background-color: #f4f4f4;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        color: #333;
+    }
+    .leaflet-control-segmentanalysis .leaflet-control-button:hover {
+        background-color: #e9e9e9;
+    }
+
+
+    /* Voeg toe aan je CSS */
+
+    .leaflet-control-segmentanalysis-panel {
+        position: absolute;
+        bottom: 60px; /* Blijft de verticale startpositie vanaf de onderkant kaart */
+        left: 0px;
+        right: 10px;
+        width: auto;
+        box-sizing: border-box;
+        max-height: 50vh; /* Behoud max hoogte */
+    
+        background-color: rgba(255, 255, 255, 0.95);
+        /* --- BEGIN HIGHLIGHT --- */
+        border: 1px solid #aaa; /* Border aan alle kanten */
+        border-radius: 5px;     /* Afronding aan alle hoeken */
+        /* --- EINDE HIGHLIGHT --- */
+        box-shadow: 0 1px 7px rgba(0,0,0,0.3); /* Schaduw rondom */
+        z-index: 999;
+        display: none; /* Initieel verborgen */
+        flex-direction: column;
+        display: flex; /* Moet altijd flex zijn als actief */
+        overflow: hidden; /* Behoud dit om de interne scroll te laten werken en content te clippen */
+    }
+    
+    .leaflet-control-segmentanalysis-panel .segmentanalysis-panel-titlebar {
+        padding: 4px 12px;
+        background-color: #f8f8f8;
+        border-bottom: 1px solid #ddd;
+        font-weight: bold;
+        text-align: center;
+        flex-shrink: 0; /* Voorkom dat titelbalk krimpt */
+    }
+    
+    .leaflet-control-segmentanalysis-panel .segmentanalysis-panel-content {
+        padding: 10px;
+        overflow-y: auto; /* Verticaal scrollen voor de inhoud (tabel + status) */
+        flex-grow: 1;     /* Laat dit deel de beschikbare hoogte vullen */
+    }
+
+    /* Status tekst */
+    .leaflet-control-segmentanalysis-panel .segmentanalysis-status {
+        font-style: italic; color: #555; margin-bottom: 8px; font-size: 0.9em; min-height: 1.1em; border-bottom: 1px dotted #ccc; padding-bottom: 5px;
+    }
+
+    /* Resultaten container */
+    .leaflet-control-segmentanalysis-panel .segmentanalysis-results {
+        font-size: 0.9em; margin-bottom: 10px; overflow-x: auto;
+    }
+    .leaflet-control-segmentanalysis-panel .comparison-item {
+        padding: 5px 0; 
+        border-bottom: 1px dashed #eee; 
+        margin-bottom: 5px; 
+        display: block;
+    }
+    .leaflet-control-segmentanalysis-panel .comparison-item:last-child {
+        border-bottom: none; 
+        margin-bottom: 0;
+    }
+    .leaflet-control-segmentanalysis-panel .comparison-item .detail {
+        margin-left: 10px;
+        display: block; /* Elk detail op nieuwe regel */
+        color: #333;
+        font-size: 0.95em;
+    }
+
+    /* Knoppen container */
+    .leaflet-control-segmentanalysis-panel .segmentanalysis-buttons {
+        margin-top: 10px;
+        padding-top: 10px;
+        border-top: 1px solid #ddd;
+        text-align: center;
+        flex-shrink: 0; /* Voorkom krimpen */
+    }
+
+    .leaflet-control-segmentanalysis-panel .segmentanalysis-table {
+        width: 100%;
+        /* --- BEGIN HIGHLIGHT --- */
+        border-collapse: collapse; /* Essentieel! */
+        /* Optioneel: een buitenrand voor de hele tabel als je dat wilt */
+        /* border: 1px solid #ccc; */
+        /* --- EINDE HIGHLIGHT --- */
+        font-size: 0.95em;
+    }
+
+
+    .leaflet-control-segmentanalysis-panel .segmentanalysis-table th,
+    .leaflet-control-segmentanalysis-panel .segmentanalysis-table td {
+        /* --- BEGIN HIGHLIGHT --- */
+        /* Geef alle cellen een basis border (die zal collapsen) */
+        border: 1px solid #ddd;
+        /* Als je alleen specifieke borders wilt, kun je hier experimenteren, bijv.: */
+        /* border-bottom: 1px solid #ddd; */
+        /* border-right: 1px solid #ddd; */
+        /* --- EINDE HIGHLIGHT --- */
+        padding: 3px 8px; /* Iets meer padding voor leesbaarheid */
+        text-align: left;
+        vertical-align: middle;
+        white-space: nowrap;
+    }
+
+    .leaflet-control-segmentanalysis-panel .segmentanalysis-table th {
+        background-color: #f0f0f0;
+        font-weight: bold;
+        /* --- BEGIN HIGHLIGHT --- */
+        text-align: center; /* Centreer alle header tekst */
+        vertical-align: middle; /* Centreer verticaal */
+        /* --- EINDE HIGHLIGHT --- */
+    }
+
+    /* Styling voor de sub-header cellen (tweede rij, vanaf 5e kolom) */
+    .leaflet-control-segmentanalysis-panel .segmentanalysis-table thead tr:nth-child(2) th {
+        /* border-top: 1px solid #ddd; /* Deze kan ook problemen geven met collapse, de algemene border zou moeten volstaan */
+        font-size: 0.9em; /* Maak sub-headers iets kleiner */
+        font-weight: normal; /* Maak sub-headers minder bold */
+        /* background-color: #f8f8f8; Iets lichtere achtergrond voor sub-headers */
+    }
+
+
+    /* Data cellen uitlijning - AANGEPAST VOOR NIEUWE KOLOMVOLGORDE */
+    .leaflet-control-segmentanalysis-panel .segmentanalysis-table td:nth-child(1), /* # */
+    .leaflet-control-segmentanalysis-panel .segmentanalysis-table td:nth-child(3), /* Duration */
+    .leaflet-control-segmentanalysis-panel .segmentanalysis-table td:nth-child(4), /* Sailed Distance */
+    .leaflet-control-segmentanalysis-panel .segmentanalysis-table td:nth-child(5), /* Direct Distance */
+    .leaflet-control-segmentanalysis-panel .segmentanalysis-table td:nth-child(6), /* Efficiency */
+    .leaflet-control-segmentanalysis-panel .segmentanalysis-table td:nth-child(7), /* Avg Speed */
+    .leaflet-control-segmentanalysis-panel .segmentanalysis-table td:nth-child(8), /* Speed StdDev */
+    .leaflet-control-segmentanalysis-panel .segmentanalysis-table td:nth-child(9), /* Top Speed */
+    .leaflet-control-segmentanalysis-panel .segmentanalysis-table td:nth-child(10),/* Leg VMC */
+    .leaflet-control-segmentanalysis-panel .segmentanalysis-table td:nth-child(11),/* Avg Bearing */
+    .leaflet-control-segmentanalysis-panel .segmentanalysis-table td:nth-child(12) { /* Bearing StdDev */
+        text-align: right;
+    }
+
+    .leaflet-control-segmentanalysis-panel .segmentanalysis-table td:nth-child(2) { /* Athlete */
+        text-align: left;
+        font-weight: bold;
+    }
+
+
+   
+   /* Zorg dat de sub-headers in de tweede rij een bovenste border hebben
+      die aansluit op de lijn onder de hoofd-headers (Speed, Bearing). */
+   .leaflet-control-segmentanalysis-panel .segmentanalysis-table thead tr:nth-child(2) th {
+       /*border-top: 1px solid #ddd; /* Of dezelfde kleur als andere borders */
+   }
+
+    /* Specifieke styling voor de hoofdheaders die colSpan hebben */
+    .leaflet-control-segmentanalysis-panel .segmentanalysis-table thead tr:first-child th[colSpan] {
+        text-align: center;
+    }
+    /* --- EINDE HIGHLIGHT --- */
+
+
+    /* Knoppen in het paneel */
+    .leaflet-control-segmentanalysis-panel .leaflet-control-button {
+        display: inline-block; padding: 4px 10px; margin: 2px 4px; font-size: 0.9em; text-decoration: none; background-color: #f4f4f4; border: 1px solid #ccc; border-radius: 3px; color: #333; cursor: pointer;
+    }
+    .leaflet-control-segmentanalysis-panel .leaflet-control-button:hover { background-color: #e9e9e9; }
+
+/* Styling voor de Label Options Control */
+.leaflet-control-labeloptions {
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 5px;
+    box-shadow: 0 1px 5px rgba(0,0,0,0.4);
+    /* leaflet-bar voegt al wat basisstijlen toe */
+}
+
+.leaflet-control-labeloptions a.leaflet-control-labeloptions-toggle {
+    width: 30px;
+    height: 30px;
+    opacity: 0.8;
+    /* background-image: url('path/to/your/settings-gear-icon.svg'); */ /* Of gebruik inline SVG */
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 18px 18px;
+    border-radius: 0px;
+    display: block;
+}
+.leaflet-control-labeloptions a.leaflet-control-labeloptions-toggle svg path {
+    fill: #333; /* Kleur voor het tandwiel icoon */
+}
+.leaflet-control-labeloptions a.leaflet-control-labeloptions-toggle:hover svg path {
+    fill: #0078A8; /* Kleur bij hover */
+}
+
+
+.leaflet-control-labeloptions .leaflet-control-labeloptions-list {
+    padding: 6px 10px 8px 10px;
+    max-height: 200px;
+    overflow-y: auto;
+    display: none; /* Standaard verborgen */
+    min-width: 150px;
+    border-radius: 0 0 5px 5px;
+}
+
+.leaflet-control-labeloptions-expanded .leaflet-control-labeloptions-list {
+    display: block;
+}
+
+/* Klasse om de toggle knop te verbergen (hergebruik van TrackFilter) */
+.leaflet-control-labeloptions .leaflet-control-labeloptions-toggle.leaflet-control-hidden {
+    display: none;
+}
+
+.leaflet-control-labeloptions .labeloptions-item {
+    display: block;
+    margin-bottom: 4px;
+    white-space: nowrap;
+}
+
+.leaflet-control-labeloptions .labeloptions-checkbox {
+    margin-right: 5px;
+    vertical-align: middle;
+    cursor: pointer;
+}
+
+.leaflet-control-labeloptions .labeloptions-label {
+    vertical-align: middle;
+    cursor: pointer;
+    font-size: 0.95em;
+}

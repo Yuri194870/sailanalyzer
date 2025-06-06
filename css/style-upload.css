@@ -1,0 +1,329 @@
+/* css/style-upload.css */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    margin: 0;
+    padding: 0;
+    background-color: #f4f7f6;
+    color: #333;
+    line-height: 1.6;
+}
+
+header {
+    background-color: #003c7c; /* Blauw als voorbeeld */
+    color: white;
+    padding: 25px 20px;
+    text-align: center;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+header h1 {
+    margin: 0;
+    font-size: 2.2em;
+    font-weight: 300;
+}
+header p {
+    margin: 5px 0 0;
+    font-size: 1.1em;
+    opacity: 0.9;
+}
+
+main {
+    max-width: 700px; /* Iets smaller voor focus */
+    margin: 20px auto;
+    padding: 25px;
+    background-color: white;
+    box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+    border-radius: 8px;
+}
+
+.tab-navigation {
+    margin-bottom: 20px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+    /* --- BEGIN HIGHLIGHT --- */
+    display: flex; /* Maak de container een flex container */
+    /* --- EINDE HIGHLIGHT --- */
+}
+
+.tab-button {
+    padding: 10px 15px;
+    cursor: pointer;
+    border: 1px solid transparent;
+    background-color: #f0f0f0;
+    /* margin-right: 5px; -- Niet meer nodig als ze de volle breedte vullen */
+    border-radius: 4px 4px 0 0;
+    /* --- BEGIN HIGHLIGHT --- */
+    flex-grow: 1;       /* Laat elke knop groeien om de ruimte te vullen */
+    text-align: center; /* Centreer de tekst binnen de knop */
+    /* Optioneel: een kleine scheidingslijn tussen de knoppen */
+    /* border-right: 1px solid #ddd; */
+    /* --- EINDE HIGHLIGHT --- */
+}
+
+/* --- BEGIN HIGHLIGHT: Verwijder rechterrand van de laatste knop als je die toevoegt --- */
+/* .tab-button:last-child {
+    border-right: none;
+} */
+/* --- EINDE HIGHLIGHT --- */
+
+
+.tab-button.active {
+    background-color: white;
+    border-color: #eee;
+    border-bottom-color: white; /* Om lijn te laten overlappen */
+    font-weight: bold;
+}
+
+.tab-content {
+    display: none; /* Verberg alle tabs standaard */
+}
+
+.tab-content.active {
+    display: block; /* Toon alleen de actieve tab */
+}
+
+#upload-section h2 {
+    margin-top: 0;
+    color: #0056b3; /* Donkerder blauw */
+    border-bottom: 2px solid #eee;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    font-size: 1.5em;
+}
+
+#upload-section > div { /* Directe kinderen van upload-section (file input div, names container, button, status) */
+    margin-bottom: 20px;
+}
+
+#gpxFileUpload {
+    display: block;
+    width: 100%; /* Neem volle breedte */
+    padding: 10px;
+    border: 1px dashed #003268; /* Opvallende gestippelde rand */
+    border-radius: 4px;
+    background-color: #f9fcff;
+    color: #007bff;
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.2s ease;
+}
+#gpxFileUpload:hover {
+    background-color: #e7f3ff;
+}
+
+
+#athleteNameInputsContainer .athlete-input-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+    padding: 10px;
+    background-color: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 4px;
+}
+
+.color-picker-wrapper {
+    display: inline-block;
+    position: relative; /* Behoud dit */
+    width: 28px;
+    height: 28px;
+    margin-right: 10px;
+    vertical-align: middle;
+    cursor: pointer; /* Maak de hele wrapper klikbaar */
+}
+
+/* De gestylde label die als de zichtbare kleurindicator dient */
+label.color-indicator {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: 1px solid #adb5bd;
+    border-radius: 4px;
+    box-sizing: border-box;
+    /* De background-color wordt via JS gezet */
+    /* cursor: pointer; /* Niet meer nodig, wrapper doet het */
+    transition: box-shadow 0.15s ease;
+    position: absolute; /* Zorg dat het de wrapper vult en onder de input kan liggen */
+    top: 0;
+    left: 0;
+    z-index: 0; /* Onder de input */
+}
+/* Als je hover op de indicator wilt: */
+.color-picker-wrapper:hover label.color-indicator {
+    box-shadow: 0 0 0 2px rgba(0,123,255,.25);
+}
+
+
+/* De daadwerkelijke input type="color" */
+input[type="color"].color-input-styled {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-color: transparent;
+
+    /* --- BEGIN HIGHLIGHT: Belangrijkste wijziging --- */
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;  /* Laat het de wrapper vullen om kliks overal te vangen */
+    height: 100%; /* Laat het de wrapper vullen */
+    opacity: 0;   /* Maak het volledig onzichtbaar */
+    /* --- EINDE HIGHLIGHT --- */
+
+    padding: 0;
+    margin: 0;
+    border: none;
+    cursor: pointer;
+    z-index: 1; /* Boven de label */
+    box-sizing: border-box;
+}
+
+
+#athleteNameInputsContainer label[for^="athleteName"] { /* Target alleen de naamlabels */
+    font-size: 0.9em;
+    color: #495057;
+    flex-shrink: 0;
+    /* margin-right: 5px; /* Is nu gap op parent */
+}
+
+#athleteNameInputsContainer input[type="text"] {
+    padding: 8px 10px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    flex-grow: 1;
+    font-size: 0.95em;
+    min-width: 150px;
+}
+#athleteNameInputsContainer input[type="text"]:focus {
+    border-color: #80bdff;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+}
+
+#athleteNameInputsContainer .file-name-display {
+    font-size: 0.8em;
+    color: #6c757d;
+    margin-left: 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 150px; /* Voorkom te lange bestandsnamen */
+}
+
+#athleteNameInputsContainer .athlete-input-group .remove-track-btn {
+    margin-left: auto; /* Duw de knop naar rechts binnen de flex-groep */
+    padding: 4px 8px;
+    font-size: 0.85em;
+    background-color: #f8d7da; /* Lichtrood */
+    border: 1px solid #f5c6cb;
+    color: #721c24; /* Donkerrood */
+    border-radius: 3px;
+    cursor: pointer;
+    line-height: 1; /* Voor compactheid */
+}
+#athleteNameInputsContainer .athlete-input-group .remove-track-btn:hover {
+    background-color: #f1c1c6;
+    color: #58151c;
+}
+
+
+#processGpxBtn {
+    padding: 10px 25px; /* Iets minder hoog, breder */
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.05em;
+    font-weight: 500;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    display: block; /* Maak knop een block element */
+    width: 100%; /* Laat het de volle breedte nemen */
+    margin-top: 20px;
+}
+#processGpxBtn:disabled {
+    background-color: #ced4da;
+    cursor: not-allowed;
+}
+#processGpxBtn:not(:disabled):hover {
+    background-color: #218838;
+    transform: translateY(-1px);
+}
+#processGpxBtn:not(:disabled):active {
+    background-color: #1e7e34;
+    transform: translateY(0px);
+}
+
+
+#uploadStatus {
+    margin-top: 20px;
+    font-style: normal; /* Normaal font ipv italic */
+    color: #212529;
+    padding: 12px;
+    background-color: #e9ecef;
+    border-left: 4px solid #007bff; /* Gekleurde linker border */
+    border-radius: 0 4px 4px 0; /* Afronding aan rechterkant */
+    min-height: 1.5em;
+}
+
+/* Styling voor de nieuwe input/knoppen (kan lijken op de GPX sectie) */
+#sazFileUpload {
+    /* Vergelijkbaar met #gpxFileUpload */
+    display: block;
+    width: 100%;
+    padding: 10px;
+    border: 1px dashed #0056b3; /* Bijvoorbeeld een andere kleur of stijl */
+    border-radius: 4px;
+    background-color: #f9fcff;
+    color: #007bff;
+    cursor: pointer;
+    text-align: center;
+}
+#processSazBtn {
+    /* Vergelijkbaar met #processGpxBtn */
+    padding: 10px 25px;
+    background-color: #17a2b8; /* Andere kleur voor onderscheid */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.05em;
+    font-weight: 500;
+    display: block;
+    width: 100%;
+    margin-top: 20px;
+}
+#processSazBtn:disabled {
+    background-color: #ced4da;
+    cursor: not-allowed;
+}
+#loadSazStatus {
+     /* Vergelijkbaar met #uploadStatus */
+    margin-top: 20px;
+    color: #212529;
+    padding: 12px;
+    background-color: #e9ecef;
+    border-left: 4px solid #17a2b8; /* Bijpassende kleur */
+    border-radius: 0 4px 4px 0;
+    min-height: 1.5em;
+}
+
+#load-session-section h2 {
+    margin-top: 0;
+    color: #17a2b8; /* Donkerder blauw */
+    border-bottom: 2px solid #eee;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    font-size: 1.5em;
+}
+
+footer {
+    text-align: center;
+    margin-top: 50px;
+    padding: 20px 0;
+    border-top: 1px solid #dee2e6;
+    font-size: 0.7em;
+    color: #6c757d;
+}

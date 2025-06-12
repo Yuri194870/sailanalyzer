@@ -1046,6 +1046,17 @@ for(var s in e)("object"==typeof exports?exports:t)[s]=e[s]}
 				}
 			},
 
+			setTrackVisibility: function(key, isVisible) {
+				if (this._trackVisibilityState.hasOwnProperty(key)) {
+					const changed = this._trackVisibilityState[key] !== !!isVisible;
+					this._trackVisibilityState[key] = !!isVisible;
+					if (changed) {
+						this.clock.setCursor(this.clock.getCurTime());
+						this.fire('trackvisibilitychanged', { key: key, isVisible: isVisible }); // NIEUW EVENT
+					}
+				} else { /* ... */ }
+			},
+
 			// Voeg deze methode toe (of pas aan als hij al bestaat):
 			loadSession: function(sessionData) {
 				console.log("TrackPlayBack.loadSession (Simplified Priority Focus) CALLED. SessionData keys:", sessionData ? Object.keys(sessionData) : 'null');

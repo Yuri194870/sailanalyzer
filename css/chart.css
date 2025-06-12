@@ -1,0 +1,126 @@
+/* css/chart.css */
+
+/* === De Resize Handle (met nieuwe hover-effecten) === */
+#resizeHandle {
+    width: 100%;
+    height: 16px;
+    background-color: #e9ecef;
+    cursor: ns-resize;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    border-bottom: 1px solid #dee2e6;
+    /* NIEUW: Voeg transitie toe aan de handle zelf voor soepele achtergrondkleur (optioneel) */
+    transition: background-color 0.2s ease;
+}
+
+/* NIEUW: Maak de hele handle iets donkerder bij hover voor een groter raakvlak */
+#resizeHandle:hover {
+    background-color: #dde1e5;
+}
+
+.grab-area {
+    width: 50px;
+    height: 5px;
+    background-color: #adb5bd;
+    border-radius: 3px;
+    /* NIEUW: Transitie voor alle veranderingen (hoogte, kleur) */
+    transition: all 0.2s ease-in-out;
+}
+
+/* NIEUW: De daadwerkelijke visuele feedback bij hover op de handle */
+#resizeHandle:hover .grab-area {
+    background-color: #007bff; /* Een heldere accentkleur (Bootstrap blauw) */
+    height: 7px; /* Maak de balk iets dikker */
+    transform: scaleX(1.1); /* Maak de balk iets breder voor een 'levendig' effect */
+}
+
+/* === De Toggle Knop (met gecorrigeerde hover-effecten voor het icoon) === */
+#toggleChartBtn {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    padding: 4px;
+    border-radius: 50%;
+    cursor: pointer;
+    line-height: 1;
+    /* De transitie voor de rotatie van de knop zelf */
+    transition: transform 0.3s ease-in-out; 
+}
+
+/* Standaard stijl voor het icoon */
+.toggle-icon {
+    display: block; /* Zorgt voor betere rendering van transformaties */
+    width: 16px;
+    height: 16px;
+    fill: #495057; /* Standaard VULKLEUR */
+    stroke: none; /* Standaard geen rand */
+    stroke-width: 0;
+    transition: all 0.2s ease-in-out; /* Transitie voor alle eigenschappen */
+}
+
+/* Het hover-effect */
+#toggleChartBtn:hover .toggle-icon {
+    fill: #007bff; /* GECORRIGEERD: Gebruik 'fill' in plaats van 'color' */
+    transform: scale(1.4);
+    stroke: #007bff;
+    stroke-width: 0.5px;
+}
+
+/* De stijl voor de ingeklapte staat. De rotatie staat nu op de knop,
+   wat stabieler is dan op het icoon zelf. */
+.collapsed #toggleChartBtn {
+    transform: translateY(-50%) rotate(180deg);
+}
+
+/* --- NIEUW: Stijl voor de Overlay Controls --- */
+#chartContainer {
+    position: relative; /* Dit is cruciaal voor het positioneren van de overlay */
+    flex-grow: 1;
+    min-height: 0;
+    /* VERWIJDER 'padding: 10px;' van hier */
+}
+
+/* Pas de stijl voor de dropdown zelf aan */
+#chartVariableSelect {
+    /* --- NIEUW: Absolute positionering direct op de select --- */
+    position: absolute;
+    top: 15px;  /* Iets minder afstand van de bovenkant */
+    left: 15px; /* Afstand van de linkerkant */
+    z-index: 10; /* Zorgt ervoor dat het boven het canvas ligt */
+    
+    /* --- De 'custom styling' code blijft hetzelfde --- */
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+
+    background-color: rgba(240, 240, 240, 0.5); /* Iets minder transparant voor betere leesbaarheid */
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+
+    border: 1px solid rgba(0, 0, 0, 0.15); /* Iets donkerdere rand voor meer contrast */
+    border-radius: 30px;
+    padding: 4px 30px 4px 12px;
+    font-size: 0.8em;
+    font-weight: 500; /* Iets dikker lettertype nu het "alleen" staat */
+    font-family: Consolas, Menlo, "Courier New", monospace;
+    cursor: pointer;
+    outline: currentcolor;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1); /* Subtiele schaduw om het 'los' te laten komen */
+    transition: all 0.2s ease; /* Alle transities in één regel */
+
+    /* De custom dropdown-pijl blijft hetzelfde */
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+    background-size: 14px 14px;
+}
+
+#chartVariableSelect:hover {
+    border-color: #999;
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 2px 5px;
+}

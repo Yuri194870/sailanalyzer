@@ -4,12 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sail Analyzer - Upload Tracks</title>
-    <link rel="stylesheet" href="./css/style-upload.css?v=4"> 
+    <link rel="stylesheet" href="./css/style-upload.css?v=2"> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
     <header>
-        <h1>Sail Race Analyzer</h1>
-        <p>Upload your GPX track files to visualize and analyze your sailing session.</p>
+        <h1>SailAnalyzer<span>.com</span></h1>
+        <p>Upload, Analyze, and Share Your Sailing Sessions</p>
     </header>
 
     <main>
@@ -20,29 +21,72 @@
     
         <div id="new-session-tab" class="tab-content active">
             <section id="upload-section">
-                <h2>Upload GPX Files</h2>
-                <div>
-                    <input type="file" id="gpxFileUpload" multiple accept=".gpx" style="padding: 5px;">
+                <h2><i class="fa-solid fa-file-circle-plus"></i> Upload GPX Files</h2>
+                
+                <div id="drop-zone" class="drop-zone">
+                    <input type="file" id="gpxFileUpload" multiple accept=".gpx" hidden>
+                    <label for="gpxFileUpload" id="drop-zone-label">
+                        <i class="fa-solid fa-upload fa-2x"></i><br>
+                        <!-- AANGEPAST -->
+                        <strong>Choose files</strong> or drag them here
+                        <span id="file-list"></span>
+                    </label>
                 </div>
-                <div id="athleteNameInputsContainer" style="margin-top: 15px; margin-bottom:15px;">
-                </div>
-                <button id="processGpxBtn" disabled>Process Files & View Map</button>
+                
+                <div id="athleteNameInputsContainer" style="margin-top: 15px; margin-bottom:15px;"></div>
+                <button id="processGpxBtn" disabled><i class="fa-solid fa-map-location-dot"></i> Process Files & View Map</button>
                 <div id="uploadStatus" style="margin-top: 10px; font-style: italic;"></div>
             </section>
         </div>
     
         <div id="load-session-tab" class="tab-content">
             <section id="load-session-section">
-                <h2>Upload SAZ File</h2>
-                <!-- <p>Select a previously saved .saz session file to continue.</p> -->
-                <div>
-                    <input type="file" id="sazFileUpload" accept=".saz" style="padding: 5px;">
+                <h2><i class="fa-solid fa-folder-open"></i> Load SAZ File</h2>
+                
+                <div id="saz-drop-zone" class="drop-zone">
+                    <input type="file" id="sazFileUpload" accept=".saz" hidden>
+                    <label for="sazFileUpload" id="saz-drop-zone-label">
+                        <i class="fa-solid fa-upload fa-2x"></i><br>
+                        <!-- AANGEPAST -->
+                        <strong>Choose a .saz file</strong> or drag it here
+                        <span id="saz-file-name"></span>
+                    </label>
                 </div>
-                <button id="processSazBtn" disabled>Load Session & View Map</button>
+        
+                <button id="processSazBtn" disabled><i class="fa-solid fa-arrow-up-from-bracket"></i> Load Session & View Map</button>
                 <div id="loadSazStatus" style="margin-top: 10px; font-style: italic;"></div>
             </section>
         </div>
     </main>
+
+    <section class="how-it-works">
+        <!-- NIEUWE "KICKER" TEKST VOOR EXTRA STIJL -->
+        <p class="section-kicker">HOW IT WORKS</p>
+        <h2>From Finish Line to Analysis in 4 Steps</h2>
+        
+        <div class="steps-container">
+            <div class="step">
+                <div class="step-icon"><i class="fa-solid fa-upload"></i></div>
+                <h3>1. Upload</h3>
+                <p>Select one or more GPX files from your sailing watch or GPS device.</p>
+            </div>
+            <div class="step">
+                <div class="step-icon"><i class="fa-solid fa-palette"></i></div>
+                <h3>2. Personalize</h3>
+                <p>Assign a name and a unique color to each track for clear identification.</p>
+            </div>
+            <div class="step">
+                <div class="step-icon"><i class="fa-solid fa-chart-line"></i></div>
+                <h3>3. Analyze</h3>
+                <p>View the tracks on the map, compare speeds, and find the winning line.</p>
+            </div>
+            <div class="step">
+                <div class="step-icon"><i class="fa-solid fa-share-nodes"></i></div>
+                <h3>4. Save & Share</h3>
+                <p>Save your session as a single .saz file to share with your training partners.</p>
+            </div>
+        </div>
+    </section>
 
     <footer>
         <p>© 2025 Sail Analyzer</p>
